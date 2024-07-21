@@ -1,5 +1,5 @@
-CC:=g++
-CFLAGS:=-std=c++11 -Wall
+CC:=gcc
+CFLAGS:=-std=c11 -Wall
 LDFLAGS:=-lm -lraylib -flto
 
 OUT_DIR:=dist
@@ -30,6 +30,9 @@ $(TARGET): clean $(OBJS)
 $(BUILD_DIR)/%.c.o: %.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+fmt:
+	clang-format -i -style=file src/*.c src/include/*.h
 
 clean:
 	@rm -rf $(BUILD_DIR)

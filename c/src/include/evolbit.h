@@ -3,20 +3,26 @@
 #include "raylib.h"
 
 typedef struct EvolBit {
-	float coreRadius;
-	Vector2 corePos;
-	int health;
-	int speed;
-	Vector2 rsize;
+    float coreRadius;
+    Vector2 corePos;
+    int health;
+    int speed;
+    Vector2 rsize;
 
-	Rectangle * originRect;
-	Vector2 originVec;
-	Texture2D * eyeTexture;
+    Rectangle originRect;
+    Vector2 originVec;
+    Image eyeImg;
+    Texture2D eyeTexture;
 
-	Vector2 targetPos;
+    Vector2 targetPos;
 
-}EvolBit;
+} EvolBit;
 
-EvolBit * newEbit();
-void drawEbit(EvolBit * e);
-void runEbit(EvolBit * e, bool bounce);
+EvolBit* newEbit();
+void drawEbit(EvolBit* e);
+void runEbit(EvolBit* e, bool bounce);
+
+void setRsizeEbit(EvolBit* e, float x, float y);
+void setPosEbit(EvolBit* e, float x, float y);
+void setRadiusEbit(EvolBit * e , float size);
+
