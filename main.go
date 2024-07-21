@@ -16,7 +16,7 @@ func main() {
 	d := evlsim.NewBit()
 	winw := rl.GetScreenWidth()
 	e.CorePos = rl.NewVector2(float32(rl.GetScreenWidth())/2 , float32(rl.GetScreenHeight())/2)
-	d.CorePos = rl.NewVector2(e.CorePos.X, e.CorePos.Y - evlsim.CORE_RADIUS*20)
+	d.CorePos = rl.NewVector2(e.CorePos.X, e.CorePos.Y - float32(e.CoreRadius)*20)
 	d.Speed = 10
 	rl.SetTargetFPS(60)
 

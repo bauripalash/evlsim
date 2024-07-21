@@ -6,9 +6,9 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const CORE_RADIUS = 10
 
 type EvlBit struct {
+	CoreRadius int32
 	CorePos rl.Vector2
 	Health  int32
 	Speed   int32
@@ -17,14 +17,17 @@ type EvlBit struct {
 	eyeTexture rl.Texture2D
 	originRct rl.Rectangle
 	originVec rl.Vector2
+	targetPos rl.Vector2
 }
 
 func NewBit() *EvlBit {
 	e := new(EvlBit)
+	e.CoreRadius = 10
 	e.CorePos = rl.NewVector2(0, 0)
 	e.Health = 100
 	e.Speed = 5
-	e.Rsize = rl.NewVector2(10, 10)
+	e.Rsize = rl.NewVector2(float32(e.CoreRadius), float32(e.CoreRadius))
+
 	eyeevl_png_raw, _ := evlfs.Open("assets/eyeevl.png")
 
 	defer eyeevl_png_raw.Close()
@@ -41,6 +44,7 @@ func NewBit() *EvlBit {
 	e.originRct = rl.NewRectangle(0,0,float32(w),float32(h))
 	e.originVec = rl.NewVector2(float32(e.eyeTexture.Width),float32(h))
 
+	e.targetPos = rl.NewVector2(0,0)
 	return e
 }
 
@@ -61,19 +65,19 @@ func (e *EvlBit) GetRSize() rl.Vector2 {
 }
 
 func (e *EvlBit) Draw() {
-	rl.DrawCircleV(e.CorePos, CORE_RADIUS, rl.Red)
-	a := rl.NewRectangle(e.CorePos.X-float32(CORE_RADIUS)/2, e.CorePos.Y-float32(CORE_RADIUS)*1.5, e.Rsize.X, e.Rsize.Y)
+	rl.DrawCircle(int32(e.CorePos.X), int32(e.CorePos.Y), float32(e.CoreRadius)+(e.Rsize.X/2)+5, rl.Black)
+	rl.DrawCircleV(e.CorePos, float32(e.CoreRadius), rl.Red)
+	a := rl.NewRectangle(e.CorePos.X-float32(e.CoreRadius)/2, e.CorePos.Y-float32(e.CoreRadius)*1.5, e.Rsize.X, e.Rsize.Y)
 	rl.DrawRectangleRounded(a, 0.5, 4, rl.Green)
 
-	b := rl.NewRectangle(e.CorePos.X-float32(CORE_RADIUS)/2, e.CorePos.Y+(float32(CORE_RADIUS)/2), e.Rsize.X, e.Rsize.Y)
-	c := rl.NewRectangle(e.CorePos.X-float32(CORE_RADIUS)*1.5, e.CorePos.Y-(e.Rsize.Y/2), e.Rsize.X, e.Rsize.Y)
-	d := rl.NewRectangle(e.CorePos.X+float32(CORE_RADIUS)/2, e.CorePos.Y-(e.Rsize.Y/2), e.Rsize.X, e.Rsize.Y)
+	b := rl.NewRectangle(e.CorePos.X-float32(e.CoreRadius)/2, e.CorePos.Y+(float32(e.CoreRadius)/2), e.Rsize.X, e.Rsize.Y)
+	c := rl.NewRectangle(e.CorePos.X-float32(e.CoreRadius)*1.5, e.CorePos.Y-(e.Rsize.Y/2), e.Rsize.X, e.Rsize.Y)
+	d := rl.NewRectangle(e.CorePos.X+float32(e.CoreRadius)/2, e.CorePos.Y-(e.Rsize.Y/2), e.Rsize.X, e.Rsize.Y)
 
 	rl.DrawRectangleRounded(a, 0.5, 4, rl.Green)
 	rl.DrawRectangleRounded(b, 0.5, 4, rl.Blue)
 	rl.DrawRectangleRounded(c, 0.5, 4, rl.Purple)
 	rl.DrawRectangleRounded(d, 0.5, 4, rl.Gray)
-	rl.DrawCircleLines(int32(e.CorePos.X), int32(e.CorePos.Y), float32(CORE_RADIUS)+(e.Rsize.X/2)+5, rl.Black)
 
 	//f := rl.NewRectangle(e.CorePos.X, e.CorePos.Y - (e.Rsize.X / 2), 32, 32)
 	//rl.DrawRectangleRounded(f, 0.5,4,rl.Green)
