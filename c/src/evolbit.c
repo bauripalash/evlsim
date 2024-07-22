@@ -9,33 +9,38 @@
 
 EvolBit* newEbit() {
     EvolBit* e = (EvolBit*)malloc(sizeof(EvolBit));
-    e->coreRadius = 100.0f;
+    e->coreRadius = 10.0f;
     e->health = 100;
-    e->speed = 5;
+    e->speed = 4;
     e->corePos = Vector2Zero();
     e->rsize = (Vector2){.x = (float)e->coreRadius, .y = (float)e->coreRadius};
 
     e->eyeImg = ImageCopy((Image){.data = EYEEVL_PNG_DATA,
-                                .width = EYEEVL_PNG_WIDTH,
-                                .height = EYEEVL_PNG_HEIGHT,
-                                .format = EYEEVL_PNG_FORMAT,
-                                .mipmaps = 1});
+                                  .width = EYEEVL_PNG_WIDTH,
+                                  .height = EYEEVL_PNG_HEIGHT,
+                                  .format = EYEEVL_PNG_FORMAT,
+                                  .mipmaps = 1});
 
     ImageResize(&e->eyeImg, e->coreRadius / 2.0f, e->coreRadius / 2.0f);
 
     e->eyeTexture = LoadTextureFromImage(e->eyeImg);
-    //UnloadImage();
+    // UnloadImage();
 
     return e;
 }
+void freeEbit(EvolBit* e) {
+    UnloadImage(e->eyeImg);
+    UnloadTexture(e->eyeTexture);
+    free(e);
+}
 
-void setRadiusEbit(EvolBit * e , float size) {
-	e->coreRadius = size;
-	e->rsize.x = size;
-	e->rsize.y = size;
-	ImageResize(&e->eyeImg, size / 2.0f, size / 2.0f);
-	UnloadTexture(e->eyeTexture);
-	e->eyeTexture = LoadTextureFromImage(e->eyeImg);
+void setRadiusEbit(EvolBit* e, float size) {
+    e->coreRadius = size;
+    e->rsize.x = size;
+    e->rsize.y = size;
+    ImageResize(&e->eyeImg, size / 2.0f, size / 2.0f);
+    UnloadTexture(e->eyeTexture);
+    e->eyeTexture = LoadTextureFromImage(e->eyeImg);
 }
 
 void setRsizeEbit(EvolBit* e, float x, float y) {
@@ -49,6 +54,8 @@ void setPosEbit(EvolBit* e, float x, float y) {
 }
 
 void drawEbit(EvolBit* e) {
+    DrawText(TextFormat("%d", e->health), e->corePos.x,
+             e->corePos.y - e->coreRadius * 4, 20, RED);
     DrawCircle(e->corePos.x, e->corePos.y,
                e->coreRadius + (e->rsize.x / 2) + 5, BLACK);
 

@@ -19,10 +19,10 @@ typedef struct EvolBit {
 } EvolBit;
 
 EvolBit* newEbit();
+void freeEbit(EvolBit* e);
 void drawEbit(EvolBit* e);
 void runEbit(EvolBit* e, bool bounce);
 
 void setRsizeEbit(EvolBit* e, float x, float y);
 void setPosEbit(EvolBit* e, float x, float y);
-void setRadiusEbit(EvolBit * e , float size);
-
+void setRadiusEbit(EvolBit* e, float size);
